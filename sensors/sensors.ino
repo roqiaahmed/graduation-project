@@ -6,9 +6,9 @@
 //#include <LiquidCrystal.h>
 //LiquidCrystal lcd(7, 6, 5, 4, 3, 2);//lcd(RS,En,D4,D5,D6,D7)
   
-#define DHTTYPE      DHT22
-#define HT_SENSOR    A0
-#define TdsSensorPin A1
+#define DHTTYPE    DHT22
+#define HT_SENSOR  A0
+#define TDS_SENSOR A1
 
 DHT dht(HT_SENSOR, DHTTYPE);
 GravityTDS gravityTds;
@@ -24,15 +24,17 @@ void setup() {
 
   pinMode(HT_SENSOR, INPUT);
   
-  gravityTds.setPin(TdsSensorPin);
+  gravityTds.setPin(TDS_SENSOR);
   gravityTds.setAdcRange(1024);  //1024 for 10bit ADC;4096 for 12bit ADC
   gravityTds.begin();  //initialization
 
   // LCD
 //  lcd.setCursor(0, 0);
-//  lcd.print("TEMP=  ");
+//  lcd.print("TEMP=   ");
 //  lcd.setCursor(0, 10);
 //  lcd.print("HU=  ");
+//  lcd.setCursor(1, 0);
+//  lcd.print("TDS=   ");
 }
 
 void loop() {
@@ -63,11 +65,19 @@ void ht_readings(float temperature, int humidity) {
 }
 
 void tds_readings(float temperature) {
-  float tdsValue = 0;
+  float tds = 0;
   gravityTds.setTemperature(temperature);
   gravityTds.update();
-  tdsValue = gravityTds.getTdsValue();
-  Serial.print(tdsValue,0);
+  tds = gravityTds.getTdsValue();
+
+  // LCD
+//  lcd.setCursor(1, 4);
+//  lcd.print(tds);
+//  lcd.print("ppm");
+  
+//  Serial.print(tds,0);
+  Serial.print("TDS= ");
+  Serial.print(tds);
   Serial.println("ppm");
   delay(500);
 }
