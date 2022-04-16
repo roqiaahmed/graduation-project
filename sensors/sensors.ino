@@ -4,10 +4,10 @@
 
 // LCD
 //#include <LiquidCrystal.h>
-//LiquidCrystal lcd(7, 6, 5, 4, 3, 2);//lcd(RS,En,D4,D5,D6,D7)
+//LiquidCrystal lcd(8, 7, 6, 5, 4, 3);//lcd(RS,En,D4,D5,D6,D7)
   
 #define DHTTYPE    DHT22
-#define HT_SENSOR  A0
+#define HT_SENSOR  2
 #define TDS_SENSOR A1
 
 DHT dht(HT_SENSOR, DHTTYPE);
@@ -42,7 +42,7 @@ void loop() {
   humidity = dht.readHumidity();
   
   ht_readings(temperature, humidity);
-  tds_readings(temperature);
+//  tds_readings(temperature);
 }
 
 void ht_readings(float temperature, int humidity) {
