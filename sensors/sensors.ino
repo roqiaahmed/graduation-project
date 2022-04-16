@@ -1,4 +1,4 @@
-#include <DHT.h>
+#include "DHT.h"
 #include <EEPROM.h>
 #include "GravityTDS.h"
 
@@ -22,11 +22,11 @@ void setup() {
 //  lcd.begin(16, 2);
 //  lcd.clear();
 
-  pinMode(HT_SENSOR, INPUT);
+  dht.begin();
   
-  gravityTds.setPin(TDS_SENSOR);
-  gravityTds.setAdcRange(1024);  //1024 for 10bit ADC;4096 for 12bit ADC
-  gravityTds.begin();  //initialization
+//  gravityTds.setPin(TDS_SENSOR);
+//  gravityTds.setAdcRange(1024);  //1024 for 10bit ADC;4096 for 12bit ADC
+//  gravityTds.begin();  //initialization
 
   // LCD
 //  lcd.setCursor(0, 0);
@@ -46,6 +46,13 @@ void loop() {
 }
 
 void ht_readings(float temperature, int humidity) {
+
+  // Check if any reads failed and exit early (to try again).
+  if (isnan(humidity) || isnan(temperature)) {
+    Serial.println(F("Failed to read from DHT sensor!"));
+    return;
+  }
+  
   //LCD
 //  lcd.setCursor(0, 5);
 //  lcd.print(temperature);
@@ -61,7 +68,7 @@ void ht_readings(float temperature, int humidity) {
   Serial.print(humidity);
   Serial.print("%");
   Serial.println();
-  delay(500);
+  delay(2000);
 }
 
 void tds_readings(float temperature) {
